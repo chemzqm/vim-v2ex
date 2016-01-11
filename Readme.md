@@ -12,7 +12,7 @@
 
 ## 安装
 
-* 需要 node > 4.0, 命令行下 `node -v` 查看
+* 需要 node >= 4.0, 命令行下 `node -v` 查看
 * 安装 vimproc，如果你使用 [vim-plug](https://github.com/junegunn/vim-plug),
   可添加：
 
