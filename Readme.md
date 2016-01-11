@@ -33,9 +33,10 @@
 ## 使用
 
 唯一命令 `:V2toggle` 打开关闭主题列表，这个列表是全局是唯一的,
+
 可添加映射，例如：
 
-    nnoremap <leader>v :V2toggle<cr>
+    nnoremap <leader>v <Plug>(V2exToggle)
 
 列表打开会自动更新，因为使用 CursorHold 事件，所有并不会影响你正常使用，列表内支持一些快捷键：
 
@@ -49,6 +50,5 @@
 * v2ex 的 latest API 存在 5 分钟左右缓存，并非实时
 * v2ex 的 latest API 每小时请求限制 120 次, 这个插件只会 1 分钟请求 1 次
 * v2ex 不提供查看回复等功能的 API，并不会考虑支持
-
 
 如有意见/建议，欢迎开 [issue](https://github.com/chemzqm/vim-v2ex/issues)

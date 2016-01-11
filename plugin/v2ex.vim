@@ -167,5 +167,7 @@ augroup end
 
 command! -nargs=0 V2toggle :call s:toggleList()
 
+nnoremap <silent> <Plug>(V2exToggle) :<c-u>V2toggle<CR>
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
