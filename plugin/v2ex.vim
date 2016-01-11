@@ -16,7 +16,10 @@ function! s:RestartProcess()
 endfunction
 
 function! s:StartProcess()
-  let s:process = vimproc#plineopen3('node ' . s:root . '/index.js')
+  let cwd = getcwd()
+  execute 'lcd ' . s:root
+  let s:process = vimproc#plineopen3('node ./index.js')
+  execute 'lcd ' . cwd
   let valid = s:process.is_valid
   if !valid
     echohl Error | echon '[v2ex] process start failed' | echohl None
