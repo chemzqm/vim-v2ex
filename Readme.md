@@ -16,12 +16,19 @@
 * 安装 vimproc，如果你使用 [vim-plug](https://github.com/junegunn/vim-plug),
   可添加：
 
-      Plug 'Shougo/vimproc', {'do': 'yse \| make'}
+      Plug 'Shougo/vimproc', {'do': 'yes \| make'}
 
   到 `.vimrc`, 然后 `PlugInstall`
 * 非 Mac 用户使用浏览器打开功能，需安装 [vim-shell](https://github.com/xolox/vim-shell), 例如：
 
       Plug 'xolox/vim-shell'
+
+* 使用 vim-plug 安装本插件：
+
+      Plug 'chemzqm/vim-v2ex', {'do': 'yes \| npm install'}
+
+如使用其它方式安装，须在安装完成后在插件目录下执行 `npm install` (因为 sqlite
+使用了 node-gyp，所以安装过程可能稍长)
 
 ## 使用
 
