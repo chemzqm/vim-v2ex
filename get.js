@@ -1,5 +1,7 @@
 var sqlite3 = require('sqlite3').verbose()
-var db = new sqlite3.Database('v2ex.sqlite')
+var path = require('path')
+var file = path.resolve(__dirname, 'v2ex.sqlite')
+var db = new sqlite3.Database(file)
 var id = process.argv[2]
 
 db.get('SELECT * FROM v2ex WHERE id = ?', [id] , function (err, data) {

@@ -17,9 +17,7 @@ endfunction
 
 function! s:StartProcess()
   let cwd = getcwd()
-  execute 'lcd ' . s:root
-  let s:process = vimproc#plineopen3('node ./index.js')
-  execute 'lcd ' . cwd
+  let s:process = vimproc#plineopen3('node '. s:root . '/index.js')
   let valid = s:process.is_valid
   if !valid
     echohl Error | echon '[v2ex] process start failed' | echohl None
@@ -44,8 +42,8 @@ function! s:toggleList()
       return
     endif
   endfor
-  exec '8split __v2ex_latest__'
-  setl bufhidden=wipe filetype=v2ex_list buftype=nofile
+  exec 'keepalt 8split __v2ex_latest__'
+  setl bufhidden=delete filetype=v2ex_list buftype=nofile
   setl scrolloff=0 conceallevel=2 concealcursor=nc
   if exists('s:process')
     let lines = s:process.stdout.read_lines(2000)
@@ -54,7 +52,7 @@ function! s:toggleList()
     call append(1, s:cached[1:])
     execute 'normal! G'
   endif
-  nnoremap <buffer> q :<C-U>quit<cr>
+  nnoremap <silent> <buffer> q :<C-U>bd!<cr>
   nnoremap <silent> <buffer> <cr>  :<C-U>call <SID>OpenInBrowser()<cr>
   nnoremap <silent> <buffer> p     :<C-U>call <SID>PreviewTopic()<cr>
   nnoremap <silent> <buffer> <c-l> :<C-U>call <SID>RefreshList()<cr>
@@ -66,14 +64,12 @@ function! s:PreviewTopic()
   let id = matchstr(getline('.'), '\v^\d+')
   let command = 'node ' . s:root . '/get.js ' . id . ' > ' . tmp
   let cwd = getcwd()
-  execute 'lcd ' . s:root
   let output = system(command)
-  execute 'lcd ' . cwd
   if v:shell_error && output !=# ""
     echohl Error | echon output | echohl None
     return
   endif
-  exe 'pedit +5 ' . tmp
+  exe 'pedit ' . tmp
 endfunction
 
 " Refresh current buffer
@@ -136,7 +132,7 @@ function! s:_on_curser_hold()
   if !wnr | return | endif
   exe wnr . 'wincmd w'
   let stderr = s:process.stderr
-  let err = stderr.read_lines(300)
+  let err = stderr.read_lines(1000)
   if !empty(err) | call s:printError(err) | endif
   if s:process.stdout.eof
     let [cond, status] = s:process.waitpid()
@@ -169,12 +165,8 @@ augroup v2ex
   autocmd CursorHold,CursorHoldI * :call s:_on_curser_hold()
   autocmd VimLeavePre * :call s:killProcess()
   autocmd WinEnter __v2ex_latest__ :resize 8
-  autocmd BufHidden *_v2ex :execute 'bd ' . expand('<abuf>')
+  "autocmd BufHidden *_v2ex :execute 'bd ' . expand('<abuf>')
 augroup end
-
-function! s:tmp(nr)
-  let g:tmp = a:nr
-endfunction
 
 command! -nargs=0 V2toggle :call s:toggleList()
 
