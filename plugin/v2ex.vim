@@ -62,7 +62,7 @@ function! s:toggleList()
 endfunction
 
 function! s:PreviewTopic()
-  let tmp = tempname()
+  let tmp = tempname() . '_v2ex'
   let id = matchstr(getline('.'), '\v^\d+')
   let command = 'node ' . s:root . '/get.js ' . id . ' > ' . tmp
   let cwd = getcwd()
@@ -73,7 +73,7 @@ function! s:PreviewTopic()
     echohl Error | echon output | echohl None
     return
   endif
-  exe 'pedit ' . tmp
+  exe 'pedit +5 ' . tmp
 endfunction
 
 " Refresh current buffer
@@ -169,7 +169,12 @@ augroup v2ex
   autocmd CursorHold,CursorHoldI * :call s:_on_curser_hold()
   autocmd VimLeavePre * :call s:killProcess()
   autocmd WinEnter __v2ex_latest__ :resize 8
+  autocmd BufHidden *_v2ex :execute 'bd ' . expand('<abuf>')
 augroup end
+
+function! s:tmp(nr)
+  let g:tmp = a:nr
+endfunction
 
 command! -nargs=0 V2toggle :call s:toggleList()
 
