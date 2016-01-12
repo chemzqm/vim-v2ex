@@ -56,16 +56,19 @@ function! s:toggleList()
   endif
   nnoremap <buffer> q :<C-U>quit<cr>
   nnoremap <silent> <buffer> <cr>  :<C-U>call <SID>OpenInBrowser()<cr>
-  nnoremap <silent> <buffer> p     :<C-U>call <SID>PrviewTopic()<cr>
+  nnoremap <silent> <buffer> p     :<C-U>call <SID>PreviewTopic()<cr>
   nnoremap <silent> <buffer> <c-l> :<C-U>call <SID>RefreshList()<cr>
   call s:highlightList()
 endfunction
 
-function! s:PrviewTopic()
+function! s:PreviewTopic()
   let tmp = tempname()
   let id = matchstr(getline('.'), '\v^\d+')
   let command = 'node ' . s:root . '/get.js ' . id . ' > ' . tmp
+  let cwd = getcwd()
+  execute 'lcd ' . s:root
   let output = system(command)
+  execute 'lcd ' . cwd
   if v:shell_error && output !=# ""
     echohl Error | echon output | echohl None
     return
