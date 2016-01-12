@@ -62,8 +62,6 @@ var run = waterfall([function (opt) {
   })
   first = false
   return Promise.all(arr)
-}, function () {
-  return getMax()
 }])
 
 function start() {
