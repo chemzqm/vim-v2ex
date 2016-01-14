@@ -43,7 +43,7 @@ function! s:toggleList()
     endif
   endfor
   exec 'keepalt 8split __v2ex_latest__'
-  setl bufhidden=delete filetype=v2ex_list buftype=nofile
+  setl bufhidden=delete filetype=v2ex_list buftype=nofile nobuflisted noswapfile
   setl scrolloff=0 conceallevel=2 concealcursor=nc
   if exists('s:process')
     let lines = s:process.stdout.read_lines(2000)
@@ -165,7 +165,7 @@ augroup v2ex
   autocmd CursorHold,CursorHoldI * :call s:_on_curser_hold()
   autocmd VimLeavePre * :call s:killProcess()
   autocmd WinEnter __v2ex_latest__ :resize 8
-  "autocmd BufHidden *_v2ex :execute 'bd ' . expand('<abuf>')
+  autocmd BufHidden *_v2ex :execute 'bd ' . expand('<abuf>')
 augroup end
 
 command! -nargs=0 V2toggle :call s:toggleList()
