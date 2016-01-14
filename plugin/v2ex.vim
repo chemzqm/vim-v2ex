@@ -52,11 +52,21 @@ function! s:toggleList()
     call append(1, s:cached[1:])
     execute 'normal! G'
   endif
-  nnoremap <silent> <buffer> q :<C-U>bd!<cr>
+  nnoremap <silent> <buffer> q     :<C-U>call <SID>QuitAll()<cr>
   nnoremap <silent> <buffer> <cr>  :<C-U>call <SID>OpenInBrowser()<cr>
   nnoremap <silent> <buffer> p     :<C-U>call <SID>PreviewTopic()<cr>
   nnoremap <silent> <buffer> <c-l> :<C-U>call <SID>RefreshList()<cr>
   call s:highlightList()
+endfunction
+
+function! s:QuitAll()
+  for nr in range(1, winnr('$'))
+    let name = bufname(winbufnr(nr))
+    if name =~# '\v_v2ex$'
+      execute 'bdelete! ' . name
+    endif
+  endfor
+  silent bdelete!
 endfunction
 
 function! s:PreviewTopic()
