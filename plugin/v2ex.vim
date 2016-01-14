@@ -1,4 +1,4 @@
-if exists('did_v2ex_plugin_loaded') || v:version < 700 || !executable('node')
+if exists('did_v2ex_plugin_loaded') || v:version < 700
   finish
 endif
 
