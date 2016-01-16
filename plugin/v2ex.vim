@@ -1,4 +1,4 @@
-if exists('did_v2ex_plugin_loaded') || !has('gui')
+if exists('did_v2ex_plugin_loaded') || !has('gui_running')
   finish
 endif
 
