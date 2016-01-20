@@ -36,7 +36,7 @@
 
 可添加映射，例如：
 
-    nnoremap <leader>v <Plug>(V2exToggle)
+    nmap <leader>v <Plug>(V2exToggle)
 
 列表打开会自动更新，因为使用 CursorHold 事件，所有并不会影响你正常使用，列表内支持一些快捷键：
 
