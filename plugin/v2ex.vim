@@ -1,4 +1,4 @@
-if exists('did_v2ex_plugin_loaded') || !has('gui_running')
+if exists('did_v2ex_plugin_loaded')
   finish
 endif
 
@@ -9,13 +9,8 @@ set cpo&vim
 let s:root = expand('<sfile>:p:h:h')
 let s:cached = []
 
-function! s:RestartProcess()
-  call s:killProcess()
-  let valid = s:StartProcess()
-  return valid
-endfunction
-
 function! s:StartProcess()
+  call s:killProcess()
   let cwd = getcwd()
   let s:process = vimproc#plineopen3('node '. s:root . '/index.js')
   let valid = s:process.is_valid
@@ -84,7 +79,7 @@ endfunction
 
 " Refresh current buffer
 function! s:RefreshList()
-  let valid = s:RestartProcess()
+  let valid = s:StartProcess()
   if !valid | return | endif
   execute 'normal! ggdG'
   let lines = s:process.stdout.read_lines(2000)
@@ -168,14 +163,13 @@ function! s:printError(list)
   echohl None
 endfunction
 
-call s:StartProcess()
-
 augroup v2ex
   autocmd!
   autocmd CursorHold,CursorHoldI * :call s:_on_curser_hold()
   autocmd VimLeavePre * :call s:killProcess()
   autocmd WinEnter __v2ex_latest__ :resize 8
   autocmd BufHidden *_v2ex :execute 'bd ' . expand('<abuf>')
+  autocmd VimEnter * :call s:StartProcess()
 augroup end
 
 command! -nargs=0 V2toggle :call s:toggleList()
